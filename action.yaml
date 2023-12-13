@@ -59,7 +59,7 @@ runs:
       if: fromJSON(${{ inputs.use-cache }})
       with:
         path: .nox
-        key: ${{ inputs.cache-key-prefix }}-${{ inputs.python-version }}-${{ hashFiles('noxfile.py', inputs.cache-dependency) }}
+        key: ${{ inputs.cache-key-prefix }}|${{ env.pythonLocation }}|${{ hashFiles('noxfile.py', inputs.cache-dependency) }}
 
     - name: Run nox
       shell: bash
