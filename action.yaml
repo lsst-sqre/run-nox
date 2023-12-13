@@ -3,6 +3,20 @@ description: >
   This composite action runs nox, and includes setting up Python and caching
   the tox environments.
 inputs:
+  cache-dependency:
+    description: >
+      Glob pattern for the additional dependency files to add to the cache
+      hash. Normally this should reference either frozen dependencies or
+      pyproject.toml files. Due to limitations in the GitHub Actions syntax,
+      only one dependency is supported.
+    required: false
+    default: "pyproject.toml"
+  cache-key-prefix:
+    description: >
+      Prefix for the nox environment cache key. Set to distinguish from
+      other caches.
+    required: false
+    default: "nox"
   nox-sessions:
     description: "Nox sessions to run (a space-delimited list)"
     required: true
@@ -33,22 +47,19 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    # For right now, we cannot cache the nox virtual environments because of
-    # https://github.com/wntrblm/nox/issues/735. Once that bug is fixed, add a
-    # configurable cache prefix and dependency pattern and also cache .nox.
-    - name: Cache nox environments
-      id: cache-nox
-      uses: actions/cache@v3
-      if: fromJSON(${{ inputs.use-cache }})
-      with:
-        path: ~/.cache
-        key: nox-pip-${{ inputs.python-version }}
-
     - name: nox install
       shell: bash
       run: |
         python -m pip install --upgrade pip
         python -m pip install --upgrade ${{ inputs.nox-package }}
+
+    - name: Cache nox environments
+      id: cache-nox
+      uses: actions/cache@v3
+      if: fromJSON(${{ inputs.use-cache }})
+      with:
+        path: .nox
+        key: ${{ inputs.cache-key-prefix }}-${{ inputs.python-version }}-${{ hashFiles('noxfile.py', inputs.cache-dependency) }}
 
     - name: Run nox
       shell: bash
