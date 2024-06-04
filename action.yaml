@@ -23,7 +23,7 @@ inputs:
   nox-package:
     description: "Pip requirements for installing nox"
     required: false
-    default: "nox"
+    default: "nox[uv]"
   nox-posargs:
     description: >
       Additional arguments to the nox command that are available to
