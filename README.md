@@ -48,7 +48,7 @@ jobs:
 - `cache-dependency` (string, optional) Glob pattern matching the files that contribute to which dependencies are installed in the nox sessions. This should match either the contributing frozen dependency files or the contributing `pyproject.toml` files. Unfortunately due to limitations in the GitHub Actions syntax only a single glob pattern is supported. Default is `pyproject.toml`.
 - `cache-key-prefix` (string, optional) Prefix for the tox environment cache key. Set to distinguish from other caches. Default is `tox`.
 - `nox-sessions` (string, required) The nox sessions to run, as a space-separated list. Example: `typing test` to run a type checking session and a Python test session.
-- `nox-package` (string, optional) Pip requirement for nox itself (argument to `pip install`). Default is `nox`, without any version constraints.
+- `nox-package` (string, optional) Pip requirement for nox itself (argument to `pip install`). Default is `nox[uv]`, without any version constraints.
 - `nox-posargs` (string, optional) Space-separated command line arguments to pass to the nox command. The positional arguments are made available as the `session.posargs` attribute to nox sessions. Default is not to pass any arguments.
 - `python-version` (string, required) The Python version.
 - `use-cache` (boolean, optional) Flag to enable caching of the nox environment. Default is `true`.
