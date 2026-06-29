@@ -55,7 +55,7 @@ runs:
 
     - name: Cache nox environments
       id: cache-nox
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       if: fromJSON(inputs.use-cache) == true
       with:
         path: .nox
